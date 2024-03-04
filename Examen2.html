@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen</title>
+    <link rel="stylesheet" href="examen.css">
+</head>
+<body>
+    <h1>Formulario de Registro</h1>
+    <div id="box">
+        <form action="">
+            <h2>Nombre:</h2>
+            <input type="text" id="nombre">
+            <h2>Telefono:</h2>
+            <input type="number" id="telefono">
+            <h2>Correo:</h2>
+            <input type="varchar" id="correo">
+            <br><br>
+            <label for="escuelas">Escuelas:</label>
+            <br>
+            <select id="escuela" onchange="mostrarOtroSelect()">
+                <option value="Cecytem">Cecytem</option>
+                <option value="Conalep">Conalep</option>
+                <option value="Cetmar">Cetmar</option>
+                <option value="Otra escuela">Otra escuela</option>
+            </select>
+            <br><br>
+            <div id="otroselect" style="display: none;">
+                <label for="escuelas">Escuelas:</label>
+                <br>
+                <select id="cuela" onchange="mostrarOtroSelect()" >
+                    <option value="Software">Software</option>
+                    <option value="Medicina">Medicina</option>
+                    <option value="Matematicas">Matematicas</option>
+                    <option value="Otra carrera">Otra carrera</option>
+                </select>
+            </div>
+            <div id="otroselect1" style="display: none;">
+                <h2>Nombre de la nueva escuela:</h2>
+                <input type="text" id="nombre">
+                <h2>Nueva carrera:</h2>
+                <input type="number" id="telefono">
+            </div>
+            <div  id="ultimo" style="display: none;">
+                <h2>Nueva carrera:</h2>
+                <input type="number" id="telefono">
+            </div>
+        </form>
+        <input type="button" value="Enviar" id="enviar" onclick="capturarNombre()">
+    </div>
+    <p id="informacion"> </p>
+    <script>
+        function capturarNombre(){
+            let nombre = document.getElementById('nombre').value;
+            let telefono = document.getElementById("telefono").value
+            let correo = document.getElementById("correo").value
+            let escuela = document.getElementById("escuela").value
+            let cuela = document.getElementById("cuela").value
+            let otra = document.getElementById("otroselect1").value
+            
+            var resutados = document.getElementById("informacion").innerHTML="Nombre: "+nombre+"<br>Telefono: "+telefono+"<br>Correo: "+correo + "<br>Escuela: "+escuela + "<br>Materia: "+cuela;
+            
+        
+        }
+
+        function mostrarOtroSelect(){
+            const frutaSelect = document.getElementById("escuela");
+            const lect = document.getElementById("cuela");
+            const ultimos = document.getElementById("ultimo");
+            const otroselect = document.getElementById("otroselect");
+
+            if(frutaSelect.value === "Cecytem"){
+                otroselect.style.display="block";
+            }
+            if(frutaSelect.value === "Conalep"){
+                otroselect.style.display="block";
+            }
+            if(frutaSelect.value === "Cetmar"){
+                otroselect.style.display="block";
+            }
+            if(frutaSelect.value === "Otra escuela"){
+                otroselect1.style.display="block";
+            }
+
+            if(lect.value === "Otra carrera"){
+                ultimo.style.display="block";
+            }
+
+            
+            
+        }
+
+    </script>
+</body>
+</html>
