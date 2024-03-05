@@ -7,90 +7,140 @@
     <link rel="stylesheet" href="examen.css">
 </head>
 <body>
-    <h1>Formulario de Registro</h1>
-    <div id="box">
-        <form action="">
-            <h2>Nombre:</h2>
-            <input type="text" id="nombre">
-            <h2>Telefono:</h2>
-            <input type="number" id="telefono">
-            <h2>Correo:</h2>
-            <input type="varchar" id="correo">
-            <br><br>
-            <label for="escuelas">Escuelas:</label>
-            <br>
-            <select id="escuela" onchange="mostrarOtroSelect()">
-                <option value="Cecytem">Cecytem</option>
-                <option value="Conalep">Conalep</option>
-                <option value="Cetmar">Cetmar</option>
-                <option value="Otra escuela">Otra escuela</option>
-            </select>
-            <br><br>
-            <div id="otroselect" style="display: none;">
+    <center>
+        <h1>Formulario de Registro</h1>
+        <div id="box">
+            <form id="miFormulario">
+                <h2>Nombre:</h2>
+                <input type="text" id="nombre">
+                <h2>Telefono:</h2>
+                <input type="number" id="telefono">
+                <h2>Correo:</h2>
+                <input type="email" id="correo">
+                <br><br>
                 <label for="escuelas">Escuelas:</label>
                 <br>
-                <select id="cuela" onchange="mostrarOtroSelect()" >
-                    <option value="Software">Software</option>
-                    <option value="Medicina">Medicina</option>
-                    <option value="Matematicas">Matematicas</option>
-                    <option value="Otra carrera">Otra carrera</option>
+                <select id="escuela" onchange="mostrarOtroSelect()">
+                    <option value="Cecytem">Cecytem</option>
+                    <option value="Conalep">Conalep</option>
+                    <option value="Cetmar">Cetmar</option>
+                    <option value="Otra escuela">Otra escuela</option>
                 </select>
-            </div>
-            <div id="otroselect1" style="display: none;">
-                <h2>Nombre de la nueva escuela:</h2>
-                <input type="text" id="nombre">
-                <h2>Nueva carrera:</h2>
-                <input type="number" id="telefono">
-            </div>
-            <div  id="ultimo" style="display: none;">
-                <h2>Nueva carrera:</h2>
-                <input type="number" id="telefono">
-            </div>
-        </form>
-        <input type="button" value="Enviar" id="enviar" onclick="capturarNombre()">
-    </div>
-    <p id="informacion"> </p>
+                <br><br>
+                <div id="otroselect" style="display: none;">
+                    <label for="carrera">Carreras:</label>
+                    <br>
+                    <select id="carrera" onchange="mostrarOtraCarrera()">
+                        <option value="Software">Software</option>
+                        <option value="Medicina">Medicina</option>
+                        <option value="Matematicas">Matematicas</option>
+                        <option value="Otra carrera">Otra carrera</option>
+                    </select>
+                </div>
+                <div id="otroselect1" style="display: none;">
+                    <h2>Nombre de la nueva escuela:</h2>
+                    <input type="text" id="nueva_escuela">
+                    <h2>Nueva carrera:</h2>
+                    <input type="text" id="nueva_carrera">
+                </div>
+                <div  id="ultimo" style="display: none;">
+                    <h2>Nueva carrera:</h2>
+                    <input type="text" id="otra_carrera">
+                </div>
+            </form>
+            <input type="button" style="background-color:rgb(74, 171, 241);" value="Enviar" id="enviar" onclick="capturarNombre()">
+        </div>
+    </center>
+    <div id="datosAntiguos"></div>
+    <div id="informacion"></div>
     <script>
+        let datosRegistrados=[];
+
         function capturarNombre(){
             let nombre = document.getElementById('nombre').value;
-            let telefono = document.getElementById("telefono").value
-            let correo = document.getElementById("correo").value
-            let escuela = document.getElementById("escuela").value
-            let cuela = document.getElementById("cuela").value
-            let otra = document.getElementById("otroselect1").value
-            
-            var resutados = document.getElementById("informacion").innerHTML="Nombre: "+nombre+"<br>Telefono: "+telefono+"<br>Correo: "+correo + "<br>Escuela: "+escuela + "<br>Materia: "+cuela;
-            
-        
+            let telefono = document.getElementById("telefono").value;
+            let correo = document.getElementById("correo").value;
+            let escuela = document.getElementById("escuela").value;
+            let carrera = document.getElementById("carrera").value;
+            let nuevaEscuela = document.getElementById("nueva_escuela").value;
+            let nuevaCarrera = document.getElementById("nueva_carrera").value;
+            let otraCarrera = document.getElementById("otra_carrera").value;
+
+            if (escuela === 'Otra escuela'){
+                carrera = document.getElementById("otra_carrera").value;
+            }
+
+            let nuevoRegistro ={
+                nombre: nombre,
+                telefono: telefono,
+                correo: correo,
+                escuela:(escuela === 'Otra escuela' ? nuevaEscuela : escuela),
+                carrera:(carrera === 'Otra carrera' ? otraCarrera : carrera || nuevaCarrera)
+            };
+
+            datosRegistrados.push(nuevoRegistro);
+
+            document.getElementById('nombre').value = '';
+            document.getElementById("telefono").value = '';
+            document.getElementById("correo").value = '';
+            document.getElementById("escuela").selectedIndex = 0;
+            document.getElementById("carrera").selectedIndex = 0;
+            document.getElementById("nueva_escuela").value = '';
+            document.getElementById("nueva_carrera").value = '';
+            document.getElementById("otra_carrera").value = '';
+            mostrarDatos();
+        }
+
+        function mostrarDatos(){
+            let informacion = document.getElementById("informacion");
+            let datosAntiguos = document.getElementById("datosAntiguos");
+
+            datosAntiguos.innerHTML = '';
+
+            informacion.innerHTML ='<h2>Datos nuevos:</h2>';
+            datosRegistrados.forEach(function(registro, index){
+                informacion.innerHTML += `
+                    <p>Registro ${index + 1}:</p>
+                    <p>Nombre: ${registro.nombre}</p>
+                    <p>Telefono: ${registro.telefono}</p>
+                    <p>Correo: ${registro.correo}</p>
+                    <p>Escuela: ${registro.escuela}</p>
+                    <p>Carrera: ${registro.carrera}</p>
+                    <hr>
+                `;
+            });
         }
 
         function mostrarOtroSelect(){
-            const frutaSelect = document.getElementById("escuela");
-            const lect = document.getElementById("cuela");
-            const ultimos = document.getElementById("ultimo");
-            const otroselect = document.getElementById("otroselect");
+            const escuelaSelect = document.getElementById("escuela");
+            const otroSelect = document.getElementById("otroselect");
+            const otroSelect1 = document.getElementById("otroselect1");
+            const ultimo = document.getElementById("ultimo");
 
-            if(frutaSelect.value === "Cecytem"){
-                otroselect.style.display="block";
-            }
-            if(frutaSelect.value === "Conalep"){
-                otroselect.style.display="block";
-            }
-            if(frutaSelect.value === "Cetmar"){
-                otroselect.style.display="block";
-            }
-            if(frutaSelect.value === "Otra escuela"){
-                otroselect1.style.display="block";
+            if(escuelaSelect.value === "Otra escuela"){
+                otroSelect1.style.display = "block";
+                otroSelect.style.display = "none";
+                ultimo.style.display = "none";
+            }else{
+                otroSelect1.style.display = "none";
+                otroSelect.style.display = "block";
             }
 
-            if(lect.value === "Otra carrera"){
-                ultimo.style.display="block";
+            if(escuelaSelect.value !== "Otra escuela"){
+                ultimo.style.display = "none";
             }
-
-            
-            
         }
 
+        function mostrarOtraCarrera(){
+            const carreraSelect = document.getElementById("carrera");
+            const ultimo = document.getElementById("ultimo");
+
+            if(carreraSelect.value === "Otra carrera"){
+                ultimo.style.display = "block";
+            }else{
+                ultimo.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
