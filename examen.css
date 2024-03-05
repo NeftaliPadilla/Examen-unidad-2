@@ -1,8 +1,8 @@
 #box{
-    background-color:rgb(222, 218, 218);
-    margin:100px;
-    padding:50px;
-    border-radius: 50px;
-    box-shadow: black;
+    background-color:rgb(246, 243, 243);
+    border-radius: 10px;
+    border:1px solid;
+    box-shadow: 5px 10px 10px 0 #000000;
     text-align: center;
+    width: 50%;
 }
